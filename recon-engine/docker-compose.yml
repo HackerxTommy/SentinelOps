@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  recon-engine:
+    build: .
+    container_name: securevault-recon-engine
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./output:/app/output
+      - ./config:/app/config
+      - ./scripts:/app/scripts
+      - ./utils:/app/utils
+      - ./tools:/app/tools
+      - ./api_server.py:/app/api_server.py
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PORT=8080
+      - SHODAN_API_KEY=${SHODAN_API_KEY}
+      - VIRUSTOTAL_API_KEY=${VIRUSTOTAL_API_KEY}
+    network_mode: "host"
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    privileged: true
+    security_opt:
+      - seccomp:unconfined
+
+volumes:
+  output:
