@@ -1,0 +1,111 @@
+/* ═══════════════════════════════════════════════════════
+   Sentinel Design Tokens
+   Source: Stitch MCP "Sentinel Noir" + Strix.ai reference
+   ═══════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ── Background Layers ── */
+  --color-bg:              #000000;
+  --color-surface:         #111111;
+  --color-surface-raised:  #0a0a0a;
+  --color-hover:           #1a1a1a;
+
+  /* ── Borders ── */
+  --color-border:          #222222;
+  --color-border-subtle:   #1a1a1a;
+  --color-border-hover:    #444444;
+
+  /* ── Text ── */
+  --color-text-primary:    #ffffff;
+  --color-text-secondary:  #a1a1aa;
+  --color-text-muted:      #71717a;
+  --color-text-faded:      #666666;
+
+  /* ── Accent ── */
+  --color-accent:          #3b82f6;
+  --color-accent-subtle:   rgba(59, 130, 246, 0.15);
+
+  /* ── Severity ── */
+  --color-critical:        #ef4444;
+  --color-critical-subtle: rgba(239, 68, 68, 0.12);
+  --color-high:            #f97316;
+  --color-high-subtle:     rgba(249, 115, 22, 0.12);
+  --color-medium:          #eab308;
+  --color-medium-subtle:   rgba(234, 179, 8, 0.12);
+  --color-low:             #3b82f6;
+  --color-low-subtle:      rgba(59, 130, 246, 0.12);
+  --color-info:            #6366f1;
+  --color-info-subtle:     rgba(99, 102, 241, 0.12);
+
+  /* ── Status ── */
+  --color-success:         #22c55e;
+  --color-success-subtle:  rgba(34, 197, 94, 0.12);
+  --color-warning:         #eab308;
+  --color-warning-subtle:  rgba(234, 179, 8, 0.12);
+  --color-error:           #ef4444;
+  --color-error-subtle:    rgba(239, 68, 68, 0.12);
+
+  /* ── Buttons ── */
+  --color-btn-primary-bg:    #ffffff;
+  --color-btn-primary-text:  #000000;
+  --color-btn-ghost-border:  #333333;
+  --color-btn-ghost-text:    #ffffff;
+
+  /* ── Charts ── */
+  --color-chart-1:         #3b82f6;
+  --color-chart-2:         #22c55e;
+  --color-chart-3:         #ef4444;
+  --color-chart-4:         #f97316;
+  --color-chart-5:         #06b6d4;
+  --color-chart-6:         #06b6d4;
+  --color-chart-grid:      #1a1a1a;
+  --color-chart-axis:      #71717a;
+
+  /* ── Typography ── */
+  --font-display: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-sans:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+  /* ── Type Scale ── */
+  --text-xs:   11px;
+  --text-sm:   13px;
+  --text-base: 14px;
+  --text-md:   16px;
+  --text-lg:   20px;
+  --text-xl:   28px;
+  --text-2xl:  40px;
+  --text-3xl:  56px;
+  --text-4xl:  72px;
+
+  /* ── Spacing ── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+
+  /* ── Border Radius ── */
+  --radius-sm:   6px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-full: 9999px;
+
+  /* ── Transitions ── */
+  --transition-fast: 100ms ease;
+  --transition-base: 150ms ease;
+  --transition-slow: 300ms ease;
+
+  /* ── Layout ── */
+  --sidebar-width: 240px;
+  --navbar-height: 56px;
+  --container-max: 1200px;
+}
