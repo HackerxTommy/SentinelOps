@@ -36,6 +36,9 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
+// ── Trust Proxy (Must be before session middleware) ──
+app.set('trust proxy', 1);
+
 // ── Session (HttpOnly cookie → MongoDB store) ──
 app.use(session({
   name: 'sentinel.sid',
@@ -57,7 +60,6 @@ app.use(session({
   },
 }));
 
-app.set('trust proxy', 1); // trust first proxy (for secure cookies behind reverse proxy)
 app.use(passport.initialize());
 
 if (process.env.NODE_ENV !== 'production') {
