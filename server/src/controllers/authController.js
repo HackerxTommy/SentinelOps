@@ -153,7 +153,9 @@ exports.googleCallback = (req, res) => {
     req.session.orgId = req.user.org_id;
     req.session.role = req.user.role;
 
-    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5175';
+    // Remove trailing slash to prevent double-slash in redirects
+    let clientUrl = process.env.CLIENT_URL ? process.env.CLIENT_URL.replace(/\/$/, '') : 'http://localhost:5173';
+    
     // Save session before redirecting so the cookie is set
     req.session.save((err) => {
       if (err) {
@@ -163,7 +165,7 @@ exports.googleCallback = (req, res) => {
       res.redirect(`${clientUrl}/dashboard`);
     });
   } catch (err) {
-    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5175';
+    let clientUrl = process.env.CLIENT_URL ? process.env.CLIENT_URL.replace(/\/$/, '') : 'http://localhost:5173';
     res.redirect(`${clientUrl}/auth?error=auth_failed`);
   }
 };

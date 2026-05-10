@@ -27,10 +27,22 @@ const httpServer = createServer(app);
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/sentinel';
 
+const allowedOrigins = [
+  process.env.CLIENT_URL ? process.env.CLIENT_URL.replace(/\/$/, '') : 'http://localhost:5173',
+  'http://localhost:5173',
+  'http://127.0.0.1:5173'
+];
+
 // ── Middleware ──
 app.use(helmet());
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true, // allow cookies to be sent cross-origin
 }));
 app.use(express.json({ limit: '10mb' }));
@@ -54,6 +66,7 @@ app.use(session({
     httpOnly: true,                                          // JS cannot read the cookie
     secure: process.env.NODE_ENV === 'production',           // HTTPS only in prod
     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    partitioned: process.env.NODE_ENV === 'production',      // Enable CHIPS for 3rd party cookies
     maxAge: 7 * 24 * 60 * 60 * 1000,                        // 7 days
     // In dev: share cookie across localhost ports (5000 server / 5173 client)
     domain: process.env.NODE_ENV === 'production' ? undefined : 'localhost',
