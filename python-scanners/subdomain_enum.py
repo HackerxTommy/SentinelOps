@@ -1,6 +1,7 @@
 import sys
 import json
 import argparse
+# pyrefly: ignore [missing-import]
 import dns.resolver
 
 WORDLIST = ["www", "api", "admin", "mail", "dev", "test", "staging", "app", "blog", "shop"]

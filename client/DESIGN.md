@@ -1,7 +1,7 @@
 # Sentinel Design System
 
 > Phase 0 — Design tokens, component anatomy, and visual language.
-> Reference: Strix.ai, Linear, Vercel Dashboard.
+> Linear, Vercel Dashboard.
 
 ---
 
