@@ -51,6 +51,8 @@ app.use(express.urlencoded({ extended: true }));
 // ── Trust Proxy (Must be before session middleware) ──
 app.set('trust proxy', 1);
 
+const isProd = process.env.NODE_ENV === 'production' || (process.env.CLIENT_URL && process.env.CLIENT_URL.includes('https'));
+
 // ── Session (HttpOnly cookie → MongoDB store) ──
 app.use(session({
   name: 'sentinel.sid',
@@ -64,12 +66,11 @@ app.use(session({
   }),
   cookie: {
     httpOnly: true,                                          // JS cannot read the cookie
-    secure: process.env.NODE_ENV === 'production',           // HTTPS only in prod
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-    partitioned: process.env.NODE_ENV === 'production',      // Enable CHIPS for 3rd party cookies
-    maxAge: 7 * 24 * 60 * 60 * 1000,                        // 7 days
-    // In dev: share cookie across localhost ports (5000 server / 5173 client)
-    domain: process.env.NODE_ENV === 'production' ? undefined : 'localhost',
+    secure: isProd,                                          // HTTPS only in prod
+    sameSite: isProd ? 'none' : 'lax',
+    partitioned: isProd ? true : false,                      // Enable CHIPS for 3rd party cookies
+    maxAge: 7 * 24 * 60 * 60 * 1000,                         // 7 days
+    domain: isProd ? undefined : 'localhost',
   },
 }));
 

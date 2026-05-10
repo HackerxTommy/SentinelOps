@@ -10,6 +10,14 @@ const api = axios.create({
   withCredentials: true, // send HttpOnly session cookie on every request
 });
 
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('sentinel_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // Handle 401 — redirect to /auth ONLY when a protected-resource call fails
 // (i.e. session expired while user was on a dashboard page).
 // Auth endpoints (/auth/me, /auth/login, etc.) are excluded because their 401s

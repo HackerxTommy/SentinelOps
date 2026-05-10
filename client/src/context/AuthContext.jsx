@@ -8,8 +8,14 @@ export const AuthProvider = ({ children }) => {
   const [org, setOrg] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // On mount, check if a valid session cookie exists
+  // On mount, check if a valid session cookie exists or JWT token is in URL
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+    if (token) {
+      localStorage.setItem('sentinel_token', token);
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
     checkAuth();
   }, []);
 
@@ -34,6 +40,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const { data } = await authAPI.login({ email, password });
+    if (data.token) localStorage.setItem('sentinel_token', data.token);
     setUser(data.user);
     setOrg(data.org);
     return data;
@@ -41,6 +48,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async ({ name, email, password, org_name }) => {
     const { data } = await authAPI.register({ name, email, password, org_name });
+    if (data.token) localStorage.setItem('sentinel_token', data.token);
     setUser(data.user);
     setOrg(data.org);
     return data;
@@ -52,6 +60,7 @@ export const AuthProvider = ({ children }) => {
     } catch {
       // even if logout API fails, clear local state
     }
+    localStorage.removeItem('sentinel_token');
     setUser(null);
     setOrg(null);
   };

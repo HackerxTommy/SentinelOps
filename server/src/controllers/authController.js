@@ -39,7 +39,15 @@ exports.register = async (req, res) => {
 
     // Note: User must login manually after registration
 
+    // Generate fallback JWT
+    const token = require('jsonwebtoken').sign(
+      { userId: user._id, orgId: org._id, role: user.role },
+      process.env.JWT_SECRET || 'sentinel-session-secret',
+      { expiresIn: '7d' }
+    );
+
     res.status(201).json({
+      token,
       user: {
         id: user._id,
         name: user.name,
@@ -93,7 +101,15 @@ exports.login = async (req, res) => {
     req.session.orgId = user.org_id;
     req.session.role = user.role;
 
+    // Generate fallback JWT
+    const token = require('jsonwebtoken').sign(
+      { userId: user._id, orgId: user.org_id, role: user.role },
+      process.env.JWT_SECRET || 'sentinel-session-secret',
+      { expiresIn: '7d' }
+    );
+
     res.json({
+      token,
       user: {
         id: user._id,
         name: user.name,
@@ -156,13 +172,20 @@ exports.googleCallback = (req, res) => {
     // Remove trailing slash to prevent double-slash in redirects
     let clientUrl = process.env.CLIENT_URL ? process.env.CLIENT_URL.replace(/\/$/, '') : 'http://localhost:5173';
     
+    // Generate fallback JWT
+    const token = require('jsonwebtoken').sign(
+      { userId: req.user._id, orgId: req.user.org_id, role: req.user.role },
+      process.env.JWT_SECRET || 'sentinel-session-secret',
+      { expiresIn: '7d' }
+    );
+
     // Save session before redirecting so the cookie is set
     req.session.save((err) => {
       if (err) {
         console.error('Session save error:', err);
         return res.redirect(`${clientUrl}/auth?error=session_failed`);
       }
-      res.redirect(`${clientUrl}/dashboard`);
+      res.redirect(`${clientUrl}/dashboard?token=${token}`);
     });
   } catch (err) {
     let clientUrl = process.env.CLIENT_URL ? process.env.CLIENT_URL.replace(/\/$/, '') : 'http://localhost:5173';
