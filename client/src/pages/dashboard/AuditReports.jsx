@@ -107,16 +107,19 @@ export default function AuditReports() {
     purple: { bg: "bg-purple-500/20", text: "text-purple-400", glow: "from-purple-500/10" },
   };
 
-  const handleDownload = async (reportId, filename) => {
+  const handleDownload = async (reportId, title) => {
     try {
       const response = await reportAPI.download(reportId);
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+      // response.data is already a Blob because of responseType: 'blob' in api.js
+      const blob = new Blob([response.data], { type: 'text/html' });
+      const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", filename || `report-${reportId}.pdf`);
+      link.setAttribute("download", `${title || "audit-report"}.html`);
       document.body.appendChild(link);
       link.click();
       link.remove();
+      window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Error downloading report:", error);
     }
@@ -278,7 +281,7 @@ export default function AuditReports() {
                     className="flex items-center gap-2 px-4 py-2 btn-primary rounded-lg text-sm text-white"
                   >
                     <Download className="w-4 h-4" />
-                    Download PDF
+                    Download Report
                   </button>
                 </div>
               </div>
