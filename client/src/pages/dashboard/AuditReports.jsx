@@ -107,6 +107,21 @@ export default function AuditReports() {
     purple: { bg: "bg-purple-500/20", text: "text-purple-400", glow: "from-purple-500/10" },
   };
 
+  const handleDownload = async (reportId, filename) => {
+    try {
+      const response = await reportAPI.download(reportId);
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", filename || `report-${reportId}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Error downloading report:", error);
+    }
+  };
+
   return (
     <DashboardLayout>
       <div className="p-6 lg:p-8 max-w-6xl mx-auto">
@@ -258,15 +273,13 @@ export default function AuditReports() {
                 </div>
 
                 <div className="flex gap-2">
-                  <a
-                    href={`/api/reports/${report._id}/download`}
-                    target="_blank"
-                    rel="noreferrer"
+                  <button
+                    onClick={() => handleDownload(report._id, `${report.title || "audit-report"}.pdf`)}
                     className="flex items-center gap-2 px-4 py-2 btn-primary rounded-lg text-sm text-white"
                   >
                     <Download className="w-4 h-4" />
                     Download PDF
-                  </a>
+                  </button>
                 </div>
               </div>
             ))}
